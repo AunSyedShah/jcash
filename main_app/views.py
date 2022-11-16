@@ -3,7 +3,7 @@ from .models import BankAccount
 
 
 # Create your views here.
-def sign_in(request):
+def transfer_funds(request):
     if request.method == "POST":
         account_number = request.POST['account_number']
         amount = float(request.POST['amount'])
@@ -24,3 +24,7 @@ def dashboard(request):
     account_detail = BankAccount.objects.get(account_number="03082219027")
     context['account_detail'] = account_detail
     return render(request, 'dashboard.html', context)
+
+
+def sign_in(request):
+    return render(request, 'sign_in.html')
