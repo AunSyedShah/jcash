@@ -17,3 +17,10 @@ def sign_in(request):
             return render(request, 'sign_in.html')
     if request.method == "GET":
         return render(request, 'sign_in.html')
+
+
+def dashboard(request):
+    context = {}
+    account_detail = BankAccount.objects.get(account_number="03082219027")
+    context['account_detail'] = account_detail
+    return render(request, 'dashboard.html', context)
