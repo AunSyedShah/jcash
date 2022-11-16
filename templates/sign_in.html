@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h2>Login</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Account Number</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" name="account_number">
+        </div>
+        <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Amount</label>
+            <input type=text class="form-control" id="exampleInputPassword1" name="amount">
+        </div>
+        <button type="submit" class="btn btn-primary">Send</button>
+    </form>
+{% endblock %}
