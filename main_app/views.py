@@ -1,5 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import BankAccount
+from django.contrib.auth import login, authenticate, logout
 
 
 # Create your views here.
@@ -7,24 +8,38 @@ def transfer_funds(request):
     if request.method == "POST":
         account_number = request.POST['account_number']
         amount = float(request.POST['amount'])
-        sender = BankAccount.objects.get(account_number="03082219027")
+        sender = BankAccount.objects.get(user=request.user.id)
         receiver = BankAccount.objects.get(account_number=account_number)
         if sender.balance > 0:
             sender.balance = sender.balance - amount
             receiver.balance = receiver.balance + amount
             sender.save()
             receiver.save()
-            return render(request, 'sign_in.html')
+            return redirect('dashboard')
     if request.method == "GET":
-        return render(request, 'sign_in.html')
+        return render(request, 'transfer_page.html')
 
 
 def dashboard(request):
     context = {}
-    account_detail = BankAccount.objects.get(account_number="03082219027")
+    account_detail = BankAccount.objects.get(user=request.user.id)
     context['account_detail'] = account_detail
     return render(request, 'dashboard.html', context)
 
 
 def sign_in(request):
+    if request.method == "POST":
+        username = request.POST['username']
+        password = request.POST['pwd']
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect("dashboard")
+        else:
+            return redirect(request.path)
     return render(request, 'sign_in.html')
+
+
+def user_logout(request):
+    logout(request)
+    return redirect('sign_in')
