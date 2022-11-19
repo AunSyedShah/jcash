@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import BankAccount
 from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth.forms import UserCreationForm
 
 
 # Create your views here.
@@ -34,6 +35,9 @@ def sign_in(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
+            if not BankAccount.objects.filter(user=user.id).exists():
+                account_number = BankAccount.objects.create(user=user)
+                account_number.save()
             return redirect("dashboard")
         else:
             return redirect(request.path)
@@ -43,3 +47,18 @@ def sign_in(request):
 def user_logout(request):
     logout(request)
     return redirect('sign_in')
+
+
+def register(request):
+    context = {}
+    if request.method == "GET":
+        form = UserCreationForm()
+        context['form'] = form
+        return render(request, 'register.html', context)
+    if request.method == "POST":
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('sign_in')
+        else:
+            return redirect(request.path)
