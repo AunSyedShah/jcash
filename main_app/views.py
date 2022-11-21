@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import BankAccount
 from django.contrib.auth import login, authenticate, logout
-from django.contrib.auth.forms import UserCreationForm
+from .forms import RegistrationForm
 
 
 # Create your views here.
@@ -52,11 +52,11 @@ def user_logout(request):
 def register(request):
     context = {}
     if request.method == "GET":
-        form = UserCreationForm()
+        form = RegistrationForm()
         context['form'] = form
         return render(request, 'register.html', context)
     if request.method == "POST":
-        form = UserCreationForm(request.POST)
+        form = RegistrationForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect('sign_in')
