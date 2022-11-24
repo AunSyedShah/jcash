@@ -9,4 +9,6 @@ class RegistrationForm(UserCreationForm):
         # remove help text for username
         help_texts = {
             'username': None,
+            'password1': None,
+            'password2': None,
         }
