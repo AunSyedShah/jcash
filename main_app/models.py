@@ -7,7 +7,7 @@ class BankAccount(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     account_number = models.CharField(default=0, max_length=11)
     balance = models.FloatField(default=0)
-    profile_picture = models.ImageField(upload_to='profile_pictures', blank=True)
+    image = models.ImageField(upload_to='account_images/', default='images/default.png')
 
     def __str__(self):
         return self.account_number

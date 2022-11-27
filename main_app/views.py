@@ -24,6 +24,7 @@ def transfer_funds(request):
 def dashboard(request):
     context = {}
     account_detail = BankAccount.objects.get(user=request.user.id)
+    print(account_detail.image.url)
     context['account_detail'] = account_detail
     return render(request, 'dashboard.html', context)
 
